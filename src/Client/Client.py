@@ -1,13 +1,10 @@
-"""
-    Client abstraction
-"""
-import ipaddress
 import socket
-import time
 
 
 class Client(object):
-
+    """
+    Client abstraction class to connect to a server, send messages to a server and receive messages from a server.
+    """
     def __init__(self, ip_address: bytes, port: int, sock: socket=None):
         """
         If sockets is none, creates a new socket object and stores the
@@ -22,6 +19,7 @@ class Client(object):
             self.__socket = sock
         self.__ip_address = ip_address
         self.__port = port
+        self.MAXLEN = 2048
 
     def connect(self):
         """
@@ -39,7 +37,7 @@ class Client(object):
         """
         total_sent = 0
         while total_sent < msg.__len__():
-            sent = self.__socket.send(msg[total_sent:])
+            sent = self.__socket.send(msg[total_sent:] + b'\n')
             if sent == 0:
                 raise RuntimeError("Socket connection broken")
             total_sent += sent
@@ -60,3 +58,7 @@ class Client(object):
         bytes_recd += len(chunk)
         print("Received {} bytes".format(bytes_recd))
         return b''.join(chunks).decode('utf-8')
+
+    def close(self):
+        self.__socket.close()
+        print('Socket closed with the server...')
