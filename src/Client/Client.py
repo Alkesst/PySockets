@@ -60,5 +60,9 @@ class Client(object):
         return b''.join(chunks).decode('utf-8')
 
     def close(self):
+        """
+        closes the connection
+        :return: void
+        """
         self.__socket.close()
         print('Socket closed with the server...')

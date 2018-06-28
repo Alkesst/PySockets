@@ -21,7 +21,7 @@ def main():
                 codify_text = input('Enter the string to codify!: ').encode()
                 client.send(cesar_offset + b'\r\n')
                 client.send(codify_text)
-                print(client.receive())
+                print(client.receive(), end='')
         client.send(b'0')
         print(client.receive())
         client.close()
