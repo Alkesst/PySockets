@@ -2,6 +2,10 @@ from src.Server.Server import Server
 
 
 def main():
+    """
+    Main app for the server.
+    :return: void
+    """
     server = Server(12345)
     try:
         while True:

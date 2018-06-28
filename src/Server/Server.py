@@ -3,6 +3,10 @@ import sys
 
 
 class Server(object):
+    """
+    Server abstraction class to handle connections from clients, and send them messages, receive messages from them and
+    codify strings with the Caesar cypher method.
+    """
     def __init__(self, port_to_listen: int):
         """
         Creates the server socket, assigns the port to listen and begin to listen in the
@@ -24,10 +28,11 @@ class Server(object):
 
     def accept_connection(self):
         """
-        Accepts a connection from a client and stores the socket
+        Accepts a connection from a client and stores the socket and client address. Sets timeout to 40 secs.
         :return: tuple with a socket and an ipAddress
         """
         (self.__client_socket, self.__client_address) = self.__server_socket.accept()
+        self.__client_socket.settimeout(40)
 
     @property
     def client_address(self):
@@ -35,7 +40,7 @@ class Server(object):
 
     def send(self, msg: bytes):
         """
-        Sends to the client a message
+        Sends to the client a message in bytes
         :param msg: message to send in bytes
         :return: void
         """
@@ -49,7 +54,7 @@ class Server(object):
 
     def receive(self) -> str:
         """
-        Waits until receives a message from the client
+        Waits until receives a message from the client in bytes
         :return: received message from client in string format
         """
         chunks = []
@@ -73,13 +78,17 @@ class Server(object):
         self.__client_socket = None
 
     def close_server(self):
+        """
+        Closes server socket
+        :return: void
+        """
         self.__server_socket.close()
         print('Server closed...')
 
     @staticmethod
     def codify(message: bytes, offset: int) -> bytes:
         """
-        Codifies a string with Cesar codification
+        Codifies a string with Caesar cypher method
         :param message: message to codify
         :param offset: offset from the Cesar codification
         :return: the codified text in bytes
