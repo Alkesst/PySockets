@@ -41,7 +41,7 @@ class Server(object):
         """
         total_sent = 0
         while total_sent < msg.__len__():
-            sent = self.__client_socket.send(msg[total_sent:] + b'\n')
+            sent = self.__client_socket.send(msg[total_sent:])
             if sent == 0:
                 raise RuntimeError("Socket connection broken")
             total_sent += sent
@@ -79,10 +79,10 @@ class Server(object):
     @staticmethod
     def codify(message: bytes, offset: int) -> bytes:
         """
-        TODO Check this please!!!!!
-        :param message:
-        :param offset:
-        :return:
+        Codifies a string with Cesar codification
+        :param message: message to codify
+        :param offset: offset from the Cesar codification
+        :return: the codified text in bytes
         """
         codified = ''
         letter_number = 26

@@ -18,7 +18,7 @@ def main():
                     print('Client ' + server.client_address[0] + ' sends offset: ' + str(offset), end='')
                     print('Client ' + server.client_address[0] + ' sends message: ' + received_message, end='')
                     print('Message sent to the client: ' + message_to_send.decode(), end='')
-            server.send(b'OK')
+            server.send(b'OK\n')
             server.close()
             print('Connection with {} closed...'.format(server.client_address[0]))
     except KeyboardInterrupt:
