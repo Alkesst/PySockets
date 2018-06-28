@@ -29,7 +29,7 @@ class Server(object):
     def accept_connection(self):
         """
         Accepts a connection from a client and stores the socket and client address. Sets timeout to 40 secs.
-        :return: tuple with a socket and an ipAddress
+        :return: void
         """
         (self.__client_socket, self.__client_address) = self.__server_socket.accept()
         self.__client_socket.settimeout(40)
