@@ -1,5 +1,6 @@
 import socket
 import sys
+import re
 
 
 class Server(object):
@@ -102,12 +103,16 @@ class Server(object):
         codified = ''
         letter_number = 26
         offset %= letter_number
-        for chars in message:
-            current_char = chr(chars)
-            if current_char.isalpha():
-                if (current_char.islower() and chars + offset > ord('z')) or \
-                        (current_char.isupper() and chars + offset > ord('Z')):
-                    chars -= letter_number
-                chars += offset
-            codified += chr(chars)
+        for chars in message.decode():
+            if re.match(r'[a-zA-Z]', chars) is not None:
+                current_byte = ord(chars)
+                if(chars.islower() and current_byte + offset > ord('z')) or \
+                        (chars.isupper() and current_byte + offset > ord('Z')):
+                    current_byte -= letter_number
+                current_byte += offset
+                codified += chr(current_byte)
+            else:
+                codified += chars
+        if codified[-1] == '\n':
+            codified = codified[:-1]
         return ''.join(codified).encode()
