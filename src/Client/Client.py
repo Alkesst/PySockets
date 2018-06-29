@@ -27,6 +27,7 @@ class Client(object):
         :return: void
         """
         self.__socket.connect((self.__ip_address, self.__port))
+        self.__socket.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, True)
         print("Connected to {}:{}".format(self.__ip_address.decode('utf-8'), self.__port))
 
     def send(self, msg: bytes):

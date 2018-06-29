@@ -19,6 +19,7 @@ class Server(object):
         self.__client_socket = None
         self.__client_address = None
         try:
+            self.__server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)  # Fixes a bug in unix platforms
             self.__server_socket.bind(('0.0.0.0', port_to_listen))              
             self.__server_socket.listen(port_to_listen)
         except OSError:
@@ -33,6 +34,7 @@ class Server(object):
         """
         (self.__client_socket, self.__client_address) = self.__server_socket.accept()
         self.__client_socket.settimeout(40)
+        self.__client_socket.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
 
     @property
     def client_address(self):
@@ -60,11 +62,15 @@ class Server(object):
         chunks = []
         bytes_recd = 0
         print("Waiting client response...")
-        chunk = self.__client_socket.recv(min(self.MAXLEN - bytes_recd, 2048))
-        if chunk == '':
-            raise RuntimeError("Socket connection broken")
-        chunks.append(chunk)
-        bytes_recd += len(chunk)
+        chunk = None
+        while chunk != b'\n':
+            chunk = self.__client_socket.recv(1)
+            if chunk == '':
+                raise RuntimeError("Socket connection broken")
+            chunks.append(chunk)
+            bytes_recd += len(chunk)
+        if chunks[-1] == b'\r':
+            chunks = chunks[:-1]
         print("Received {} bytes".format(bytes_recd))
         return b''.join(chunks).decode('utf-8')
 

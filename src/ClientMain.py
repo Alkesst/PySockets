@@ -19,7 +19,7 @@ def main():
             cesar_offset = input("Enter the offset of the codification!: ").encode()
             if cesar_offset != b'0':
                 codify_text = input('Enter the string to codify!: ').encode()
-                client.send(cesar_offset + b'\r\n')
+                client.send(cesar_offset + b'\r')
                 client.send(codify_text)
                 print(client.receive(), end='')
         client.send(b'0')
