@@ -11,3 +11,6 @@ Also learning socket programming with python 3.x (y subir algo la nota de la asi
 
 #### Notes
 The server only listens to the 12345 port.
+
+You can find a little document with a comparison between Java sockets and Python Sockets [here](https://docs.google.com/presentation/d/1dAZm8AK7vR8rRWpfW2o_YgxK9XGOSsHs71B6UeDFHvw/edit?usp=sharing)
+
